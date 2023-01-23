@@ -120,20 +120,11 @@ gameObjectInfo = gameObject()
 
 // takes in argument of a player's name and returns the number of points scored for that player
 function numPointsScored(playerName){
-    for (let designation in gameObjectInfo){
-       let designationObj = gameObjectInfo[designation]
-        for (let details in designationObj){
-            if (details === "players"){
-                let playerInfoObj = designationObj[details]
-                for (let players in playerInfoObj){
-                    if(players === playerName){
-                        let statsObj = playerInfoObj[players]
-                        for (let stats in statsObj){
-                            if (stats === "points"){
-                                console.log(statsObj[stats])
-                            }
-                        }
-                    }
+    for (let team in gameObjectInfo){
+        if (gameObjectInfo[team]["players"]){
+            for (let player in gameObjectInfo[team]["players"]){
+                if(player === playerName){
+                    return gameObjectInfo[team]["players"][playerName]["points"]  
                 }
             }
         }
@@ -141,97 +132,67 @@ function numPointsScored(playerName){
     }
 }
 
-numPointsScored('Ben Gordon')
+console.log(numPointsScored('Ben Gordon'))
 
 // takes in argument of a player's name and returns the shoe size for that player
 function shoeSize(playerName){
-    for (let designation in gameObjectInfo){
-       let designationObj = gameObjectInfo[designation]
-        for (let details in designationObj){
-            if (details === "players"){
-                let playerInfoObj = designationObj[details]
-                for (let players in playerInfoObj){
-                    if(players === playerName){
-                        let statsObj = playerInfoObj[players]
-                        for (let stats in statsObj){
-                            if (stats === "shoe"){
-                                console.log(statsObj[stats])
-                            }
-                        }
-                    }
+    for (let team in gameObjectInfo){
+        if (gameObjectInfo[team]["players"]){
+            for (let player in gameObjectInfo[team]["players"]){
+                if (player === playerName){
+                    return gameObjectInfo[team]["players"][playerName]["shoe"]
                 }
             }
         }
-       
     }
 }
 
-shoeSize('Ben Gordon')
+console.log(shoeSize('Ben Gordon'))
 
 // takes in argument of the team name and returns an array of that teams colors
 function teamColors(teamName){
-    for (let designation in gameObjectInfo){
-        let designationObj = gameObjectInfo[designation]
-         for (let details in designationObj){
-             if (designationObj[details] === teamName){
-                console.log(designationObj["colors"])
-             }
+    for (let team in gameObjectInfo){
+        if (gameObjectInfo[team]["teamName"] === teamName){
+            return gameObjectInfo[team]["colors"]
         }
     }
 }
 
-teamColors('Brooklyn Nets')
+console.log(teamColors('Brooklyn Nets'))
 
 // operates on the game object to return an array of the team names
 function teamNames(){
     let teams =[]
-    for (let designation in gameObjectInfo){
-        let designationObj = gameObjectInfo[designation]
-        for (let details in designationObj){
-            if (details === "teamName")
-            teams.push(designationObj[details])
+    for (let team in gameObjectInfo){
+            teams.push(gameObjectInfo[team]["teamName"])
         }
-    }
-    console.log(teams)
+    return teams
 }
-
-teamNames()
+   
+console.log(teamNames())
 
 // takes in argument of a team name and returns an array of the jersey number's for that team
 function playerNumbers(teamName){
     let jerseyNumbers = []
-    for (let designation in gameObjectInfo){
-        let designationObj = gameObjectInfo[designation]
-         for (let details in designationObj){
-            if (designationObj[details] === teamName){
-                let playerInfoObj = designationObj['players']
-                for (let players in playerInfoObj){
-                    let statsObj = playerInfoObj[players]
-                    for (let stats in statsObj){
-                        if (stats === 'number'){
-                            jerseyNumbers.push(statsObj[stats])
-                        }
-                    } 
-                }
+    for (let team in gameObjectInfo){
+        if (gameObjectInfo[team]["teamName"] === teamName){
+            for (let player in gameObjectInfo[team]["players"]){
+                jerseyNumbers.push(gameObjectInfo[team]["players"][player]["number"])
             }
         }
     }
-    console.log(jerseyNumbers)
+    return jerseyNumbers
 }
 
-playerNumbers('Brooklyn Nets')
+console.log(playerNumbers('Brooklyn Nets'))
 
-// takes in argument of a player's name and returns a object of that player's stats
+// takes in argument of a player's name and returns an object of that player's stats
 function playerStats(playerName){
-    for (let designation in gameObjectInfo){
-        let designationObj = gameObjectInfo[designation]
-        for (let details in designationObj){
-            if (details === "players"){
-                let playerInfoObj = designationObj[details]
-                for (let players in playerInfoObj){
-                    if (players === playerName){
-                        console.log(playerInfoObj[players])
-                    }
+    for (let team in gameObjectInfo){
+        if (gameObjectInfo[team]["players"]){
+            for (let player in gameObjectInfo[team]["players"]){
+                if (player === playerName){
+                    return gameObjectInfo[team]["players"][playerName]
                 }
                     
             }
@@ -239,209 +200,105 @@ function playerStats(playerName){
     }
 }
 
-playerStats('Alan Anderson')
+console.log(playerStats('Alan Anderson'))
 
 // returns the number of rebounds associated with the player that has the largest shoe size
 function bigShoeRebounds(){
-    let shoeSizes = []
-    for (let designation in gameObjectInfo){
-        let designationObj = gameObjectInfo[designation]
-         for (let details in designationObj){
-            if (details === 'players'){
-                let playerObj = designationObj[details]
-                for (let players in playerObj){
-                    let statsObj = playerObj[players]
-                    for (stats in statsObj){
-                        if (stats === 'shoe'){
-                            shoeSizes.push(statsObj[stats])
-                        }
-                    }
+    let shoeSize = 0
+    let rebounds = 0
+    let playerName
+    for (let team in gameObjectInfo){
+        if (gameObjectInfo[team]["players"]){
+            for (let player in gameObjectInfo[team]["players"]){
+                if (gameObjectInfo[team]["players"][player]["shoe"] > shoeSize){
+                    shoeSize = gameObjectInfo[team]["players"][player]["shoe"] 
+                    rebounds = gameObjectInfo[team]["players"][player]["rebounds"]
+                    playerName = player
                 }
-            
+
             }
         }
     }
-    let shoeMax = Math.max.apply(Math, shoeSizes)
-    for (let designation in gameObjectInfo){
-        let designationObj = gameObjectInfo[designation]
-         for (let details in designationObj){
-            if (details === 'players'){
-                let playerObj = designationObj[details]
-                for (let players in playerObj){
-                    let statsObj = playerObj[players]
-                    for (stats in statsObj){
-                        if (stats === 'shoe' && statsObj[stats] === shoeMax){
-                            console.log(`${players} - Shoe Size: ${statsObj[stats]}, Rebounds: ${statsObj['rebounds']}`)
-                        }
-                    }
-                } 
-            }
-        }
-    }               
+    return `${playerName}: Shoe Size = ${shoeSize}, # of Rebounds: ${rebounds}`
 }
 
-bigShoeRebounds()
+console.log(bigShoeRebounds())
 
 // returns player with the most points
 function mostPointsScored(){
-    let pointsScored = []
-    for (let designation in gameObjectInfo){
-        let designationObj = gameObjectInfo[designation]
-         for (let details in designationObj){
-            if (details === 'players'){
-                let playerObj = designationObj[details]
-                for (let players in playerObj){
-                    let statsObj = playerObj[players]
-                    for (stats in statsObj){
-                        if (stats === 'points'){
-                            pointsScored.push(statsObj[stats])
-                        }
-                    }
+    let pointsScored = 0
+    let playerWithMostPoints
+    for (let team in gameObjectInfo){
+        if (gameObjectInfo[team]["players"]){
+            for (let player in gameObjectInfo[team]["players"]){
+                if (gameObjectInfo[team]["players"][player]["points"] > pointsScored){
+                    pointsScored = gameObjectInfo[team]["players"][player]["points"]
+                    playerWithMostPoints = player
                 }
-            
             }
         }
-    } 
-    let maxPoints = Math.max.apply(Math, pointsScored)
-    for (let designation in gameObjectInfo){
-        let designationObj = gameObjectInfo[designation]
-         for (let details in designationObj){
-            if (details === 'players'){
-                let playerObj = designationObj[details]
-                for (let players in playerObj){
-                    let statsObj = playerObj[players]
-                    for (stats in statsObj){
-                        if (stats === 'points' && statsObj[stats] === maxPoints){
-                            console.log(`${players} - Points: ${statsObj[stats]}`)
-                        }
-                    }
-                } 
-            }
-        }
-    }            
+    }
+    return playerWithMostPoints           
 }
 
-mostPointsScored()
+console.log(mostPointsScored())
 
-// returns team with the most posts
+// returns team with the most points
 function winningTeam(){
-    let teamPoints = []
-    for (let designation in gameObjectInfo){
-        let designationObj = gameObjectInfo[designation]
-         for (let details in designationObj){
-            if (details === 'players'){
-                let playerObj = designationObj[details]
-                for (let players in playerObj){
-                    let statsObj = playerObj[players]
-                    for (stats in statsObj){
-                        if (stats === 'points'){
-                            let obj = {}
-                            obj[designationObj['teamName']] = statsObj[stats]
-                            teamPoints.push(obj)
-                        }
-                    }
+    let netsPoints = 0
+    let hornetsPoints = 0
+    for (let team in gameObjectInfo){
+        if (gameObjectInfo[team]["players"]){
+            for (let player in gameObjectInfo[team]["players"]){
+                if (gameObjectInfo[team]["teamName"] === "Brooklyn Nets"){
+                    netsPoints += gameObjectInfo[team]["players"][player]["points"]
+                } else {
+                    hornetsPoints += gameObjectInfo[team]["players"][player]["points"]
                 }
-            
-            }
-        }
-    }  
-    let netsScore = []
-    let hornetsScore = []
-    for (let points in teamPoints){
-        let pointsObj = teamPoints[points]
-        for (let team in pointsObj){
-            if (team === 'Brooklyn Nets'){
-                netsScore.push(pointsObj[team])
-            } else {
-                hornetsScore.push(pointsObj[team])
             }
         }
     }
-    let sumNets = 0
-    let sumHornets = 0
-    for (let i = 0; i < netsScore.length; i++){
-        sumNets += netsScore[i]
-    }
-    for (let i = 0; i < hornetsScore.length; i++){
-        sumHornets += hornetsScore[i]
-    }
-    sumNets > sumHornets ? console.log(`Winning Team: Nets with ${sumNets} points!`) : console.log(`Winning Team: Hornets with ${sumHornets} points!`) 
+    return (netsPoints > hornetsPoints ? `Brooklyn nets with ${netsPoints} points!` : `Charlet Hornets with ${hornetsPoints} points!`) 
 }
 
-winningTeam()
+console.log(winningTeam())
 
 
 // returns player with the longest name
 function playerWithLongestName(){
-    let characterCount = []
-    for (let designation in gameObjectInfo){
-        let designationObj = gameObjectInfo[designation]
-         for (let details in designationObj){
-            if (details === 'players'){
-                let playerObj = designationObj[details]
-                for (let players in playerObj){
-                    characterCount.push(players.length)
+    let characterCount = 0
+    let longestName
+    for (let team in gameObjectInfo){
+        if (gameObjectInfo[team]["players"]){
+            for (let player in gameObjectInfo[team]["players"]){
+                if (player.length > characterCount){
+                    characterCount = player.length
+                    longestName = player
                 }
             }
         }
     }
-    let longestName = Math.max.apply(Math, characterCount)
-    for (let designation in gameObjectInfo){
-        let designationObj = gameObjectInfo[designation]
-         for (let details in designationObj){
-            if (details === 'players'){
-                let playerObj = designationObj[details]
-                for (let players in playerObj){
-                    if (players.length === longestName){
-                        console.log(`${players} has the longest name!`)
-                        return players
-                    }
-                } 
-            }
-        }
-    }                  
+    return longestName
 }
 
-playerWithLongestName()
+console.log(playerWithLongestName())
 
 // returns true if the player with the longest name had the most steals.
 function doesLongNameStealATon(){
-    let allSteals = []
-    for (let designation in gameObjectInfo){
-        let designationObj = gameObjectInfo[designation]
-         for (let details in designationObj){
-            if (details === 'players'){
-                let playerObj = designationObj[details]
-                for (let players in playerObj){
-                    let statsObj = playerObj[players]
-                    for (stats in statsObj){
-                        if (stats === 'steals'){
-                            allSteals.push(statsObj[stats])
-                        }
-                    }
+    let steals = 0
+    let playerWithMostSteals
+    for (let team in gameObjectInfo){
+        if (gameObjectInfo[team]["players"]){
+            for (let player in gameObjectInfo[team]["players"]){
+                if (gameObjectInfo[team]["players"][player]["steals"] > steals){
+                    steals = gameObjectInfo[team]["players"][player]["steals"]
+                    playerWithMostSteals = player
                 }
+
             }
         }
-                    
     }
-    let maxSteals = Math.max.apply(Math, allSteals)
-    for (let designation in gameObjectInfo){
-        let designationObj = gameObjectInfo[designation]
-         for (let details in designationObj){
-            if (details === 'players'){
-                let playerObj = designationObj[details]
-                for (let players in playerObj){
-                    let statsObj = playerObj[players]
-                    for (stats in statsObj){
-                        if (stats === 'steals' && statsObj[stats] === maxSteals && players === playerWithLongestName()){
-                            console.log(`${players} has the longest name and the most steals with ${maxSteals}!`)
-                            return true
-                        } 
-                    }
-                } 
-            }
-        }
-    }               
+    return (playerWithLongestName = playerWithMostSteals ? true : false)
 }
 
-doesLongNameStealATon()
+console.log(doesLongNameStealATon())
